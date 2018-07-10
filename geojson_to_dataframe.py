@@ -36,6 +36,8 @@ collection = db.YourCollection
 
 # Get one city for test
 locations = collection.find_one()
+# Here locations is a cursor from mongo 
+# so you have to specify the field to visit
 geo = locations['geometry']
 coords = geo['coordinates']
 # Flatten json to df
