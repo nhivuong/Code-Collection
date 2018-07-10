@@ -44,10 +44,11 @@ coords = geo['coordinates']
 # If you have a simple json, this step should be sufficient to get the data frame df
 # But in case of nested json, further manipulation is needed
 df = json_normalize(geo)
-# Because MultiPolygon type is stored is [[[ [x,y],... ]]], so we need to visit the inner array 
+# Because MultiPolygon type is stored as [[[ [x,y],... ]]], so we need to visit the inner array 
 # df['coordinates'][1] is null
+city = pd.DataFrame()
 for i in df['coordinates'][0]:
-    # Currenly the whole multiplygon coordinate array is [[  [x,y], ...]]
+    # Currently the whole multipolygon coordinate array is [[  [x,y], ...]]
     # First split 'coordinates', which is an 2 element array list, into 2 columns
     # by splitting first and second index
     # .apply(pd.Series) breaks the list of tuples into columns
@@ -62,4 +63,6 @@ for i in df['coordinates'][0]:
         )
     # Split 'coordinates' to 'lat', 'long' columns
     df2[['lat','long']] = df2['coordinates'].apply(pd.Series)
-    print(df2)
+    city = city.append(df2)
+
+print(city)
