@@ -55,12 +55,13 @@ for i in df['coordinates'][0]:
     # .stack() to flip these columns into rows aka a Series
     # .to_frame() to convert back to DataFrame
     # Finally rename the columns
-    df2 = (df['coordinates'].apply(lambda r: [(j[0],j[1]) for j in i[0]])
-        .apply(pd.Series)
-        .stack()
-        .reset_index(level=1)
-        .rename(columns={0:'coordinates',"level_1":"point"})
-        )
+    df2 = (df['coordinates']
+         .apply(lambda r: [(j[0],j[1]) for j in r[0][0]])
+         .apply(pd.Series)
+         .stack()
+         .to_frame()
+         .rename(columns={0:'coordinates'})
+         )
     # Split 'coordinates' to 'lat', 'long' columns
     df2[['lat','long']] = df2['coordinates'].apply(pd.Series)
     city = city.append(df2)
